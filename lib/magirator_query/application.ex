@@ -4,12 +4,12 @@ defmodule MagiratorQuery.Application do
   @moduledoc false
 
   use Application
+  use Supervisor
 
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: MagiratorQuery.Worker.start_link(arg)
-      # {MagiratorQuery.Worker, arg}
+      # worker(Bolt.Sips, [Application.get_env(:bolt_sips, Bolt)])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
