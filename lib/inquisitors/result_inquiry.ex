@@ -34,6 +34,13 @@ defmodule MagiratorQuery.Inquisitors.ResultInquiry do
   defp nodes_to_results( nodes ) do
     nodes
     |> Enum.map( &node_to_visual_result/1 )
+    |> Enum.group_by(fn %{match_id: match_id} -> match_id end, &(&1) )
+    |> Enum.reduce([], fn {key, value}, acc -> 
+      acc ++ [%{
+        match_id: key, 
+        results: value
+      }] 
+    end)
   end
 
   defp node_to_visual_result( node ) do
