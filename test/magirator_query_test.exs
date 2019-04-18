@@ -16,4 +16,44 @@ defmodule MagiratorQueryTest do
     assert Map.has_key? first, :wins
     assert Map.has_key? first, :losses
   end
+
+  test "extend results" do
+    r1 = %{
+      id: 32,
+      game_id: 41,
+      player_id: 10,
+      deck_id: 20,
+      place: 1,
+      comment: "Result 1"
+    }
+    
+    r2 = %{
+      id: 30,
+      game_id: 40,
+      player_id: 10,
+      deck_id: 20,
+      place: 1,
+      comment: "Result 2"
+    }
+    
+    r3 = %{
+      id: 36,
+      game_id: 44,
+      player_id: 10,
+      deck_id: 20,
+      place: 2,
+      comment: "Result 3"
+    }
+
+    results = [r1, r2, r3]
+
+    { status, data } = extend_results_visual( results )
+    assert :ok == status
+    assert is_list data
+    assert not Enum.empty? data
+    first = List.first(data)
+    assert is_map first
+    assert Map.has_key? first, :match_id
+    assert Map.has_key? first, :results
+  end
 end
