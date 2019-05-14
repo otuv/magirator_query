@@ -25,19 +25,26 @@ defmodule MagiratorQuery.Inquisitors.ResultInquiry do
     """
     
     Bolt.query!(Bolt.conn, query)
-    |> nodes_to_results
+    |> nodes_to_matches
     |> Helpers.return_as_tuple
   end
 
 
   #Helpers
-  defp nodes_to_results( nodes ) do
+  defp nodes_to_matches( nodes ) do
     nodes
     |> Enum.map( &node_to_visual_result/1 )
-    |> Enum.group_by(fn %{match_id: match_id} -> match_id end, &(&1) )
+    |> Enum.group_by(
+      fn %{match_id: match_id, opponent_name: opn, opponent_deck_name: odn} -> 
+        %{match_id: match_id, opponent_name: opn, opponent_deck_name: odn}
+      end, 
+      fn %{game_id: game_id, time: time, place: place} -> 
+        %{game_id: game_id, time: time, place: place}
+      end 
+    )
     |> Enum.reduce([], fn {key, value}, acc -> 
       acc ++ [%{
-        match_id: key, 
+        info: key, 
         results: value
       }] 
     end)
