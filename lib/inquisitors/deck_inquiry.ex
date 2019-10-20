@@ -30,7 +30,7 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
     |> Enum.group_by(fn %{id: id} -> id end, fn %{place: place} -> place end)
     |> Enum.reduce([], fn {key, values}, acc ->
       acc ++ [%{
-        id: key, 
+        deck_id: key, 
         games: Enum.count(values),
         wins: Enum.count(values, fn x -> x == 1 end),
         losses: Enum.count(values, fn x -> x > 1 end)
