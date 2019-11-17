@@ -11,7 +11,7 @@ defmodule MagiratorQueryTest do
     assert not Enum.empty? data
     first = List.first(data)
     assert is_map first
-    assert Map.has_key? first, :id
+    assert Map.has_key? first, :deck_id
     assert Map.has_key? first, :games
     assert Map.has_key? first, :wins
     assert Map.has_key? first, :losses
@@ -53,7 +53,7 @@ defmodule MagiratorQueryTest do
     assert not Enum.empty? data
     first = List.first(data)
     assert is_map first
-    assert Map.has_key? first, :match_id
+    assert Map.has_key? first, :info
     assert Map.has_key? first, :results
   end
 end
