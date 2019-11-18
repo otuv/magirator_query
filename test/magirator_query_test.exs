@@ -3,7 +3,6 @@ defmodule MagiratorQueryTest do
 
   import MagiratorQuery
 
-
   test "Select all deck results" do
     { status, data } = find_deck_results(20)
     assert :ok == status
@@ -16,6 +15,7 @@ defmodule MagiratorQueryTest do
     assert Map.has_key? first, :wins
     assert Map.has_key? first, :losses
   end
+
 
   test "extend results" do
     r1 = %{
@@ -55,5 +55,21 @@ defmodule MagiratorQueryTest do
     assert is_map first
     assert Map.has_key? first, :info
     assert Map.has_key? first, :results
+  end
+
+
+  test "list deck results" do
+    { status, data } = list_deck_results(20)
+    assert :ok == status
+    assert is_list data
+    assert not Enum.empty? data
+    first = List.first(data)
+    assert is_map first
+    assert Map.has_key? first, :match_id
+    assert Map.has_key? first, :game_id
+    assert Map.has_key? first, :place
+    assert Map.has_key? first, :opponent_deck_id
+    assert Map.has_key? first, :opponent_deck_name
+    assert Map.has_key? first, :opponent_name
   end
 end
