@@ -71,5 +71,9 @@ defmodule MagiratorQueryTest do
     assert Map.has_key? first, :opponent_deck_id
     assert Map.has_key? first, :opponent_deck_name
     assert Map.has_key? first, :opponent_name
+    assert !Enum.find data, &(&1.match_id == nil) 
+    assert !Enum.find data, &(&1.game_id == nil) 
+    assert !Enum.find data, &(&1.opponent_deck_name == nil) 
+    assert !Enum.find data, &(&1.opponent_name == nil) 
   end
 end

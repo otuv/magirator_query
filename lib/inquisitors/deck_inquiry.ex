@@ -49,12 +49,16 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
 
     query = """
       MATCH 
-        (q_deck:Deck)<-[:With]-(q_result:Result)-[:In]->(game:Game)<-[:In]-(opponent_result:Result)-[:With]->(opponent_deck:Deck), 
-        (opponent_result)<-[:Got]-(opponent_player:Player)-[:Currently]->(opponent_data:Data) 
+        (q_deck:Deck)<-[:With]-(q_result:Result)
+        -[:In]->(game:Game)<-[:In]-
+        (opponent_result:Result)-[:With]->(opponent_deck:Deck)
+        -[:Currently]->(opponent_deck_data:Data), 
+        (opponent_result)<-[:Got]-(opponent_player:Player)
+        -[:Currently]->(opponent_data:Data) 
       OPTIONAL MATCH 
         (match:Match)-[:Contains]->(game) 
       WHERE q_deck.id = #{deck_id} 
-      RETURN match, game, q_result, opponent_deck, opponent_data
+      RETURN match, game, q_result, opponent_deck, opponent_data, opponent_deck_data
     """
 
     Bolt.query!(Bolt.conn, query)
@@ -72,15 +76,16 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
     |> map_prop(node_set, "game")
     |> map_prop(node_set, "q_result", "result")
     |> map_prop(node_set, "opponent_deck")
-    |> map_prop(node_set, "opponent_data", "opponent")
+    |> map_prop(node_set, "opponent_deck_data")
+    |> map_prop(node_set, "opponent_data")
 
     %{
-      match_id: prop_map["match"]["id"], 
+      match_id: zero_nil(prop_map["match"]["id"]), 
       game_id: prop_map["game"]["id"], 
       place: prop_map["result"]["place"], 
       opponent_deck_id: prop_map["opponent_deck"]["id"], 
-      opponent_deck_name: prop_map["opponent_deck"]["name"], 
-      opponent_name: prop_map["opponent"]["name"], 
+      opponent_deck_name: prop_map["opponent_deck_data"]["name"], 
+      opponent_name: prop_map["opponent_data"]["name"], 
     }
   end
 
@@ -98,5 +103,14 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
 
   defp map_prop(map, node_set, name) do
     map_prop(map, node_set, name, name)
+  end
+
+
+  defp zero_nil(nil) do
+    0
+  end
+
+  defp zero_nil(x) do
+    x
   end
 end
