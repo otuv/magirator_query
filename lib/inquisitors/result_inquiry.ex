@@ -1,7 +1,7 @@
 defmodule MagiratorQuery.Inquisitors.ResultInquiry do
 
   alias Bolt.Sips, as: Bolt
-  alias MagiratorQuery.Helpers
+  alias MagiratorQuery.Helper
 
   def extend_results_visual( results ) do
 
@@ -26,7 +26,7 @@ defmodule MagiratorQuery.Inquisitors.ResultInquiry do
     
     Bolt.query!(Bolt.conn, query)
     |> nodes_to_matches
-    |> Helpers.return_as_tuple
+    |> Helper.return_as_tuple
   end
 
 

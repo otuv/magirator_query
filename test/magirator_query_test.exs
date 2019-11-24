@@ -2,6 +2,8 @@ defmodule MagiratorQueryTest do
   use ExUnit.Case
 
   import MagiratorQuery
+  
+  alias MagiratorQuery.Helper
 
   test "Select all deck results" do
     { status, data } = find_deck_results(20)
@@ -59,7 +61,7 @@ defmodule MagiratorQueryTest do
 
 
   test "list deck results" do
-    { status, data } = list_deck_results(20)
+    {status, data} = Helper.clock("list deck results", &list_deck_results/1, [20])
     assert :ok == status
     assert is_list data
     assert not Enum.empty? data

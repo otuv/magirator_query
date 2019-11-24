@@ -1,4 +1,4 @@
-defmodule MagiratorQuery.Helpers do
+defmodule MagiratorQuery.Helper do
   @doc """
   Convert map string keys to :atom keys
   """
@@ -52,5 +52,34 @@ defmodule MagiratorQuery.Helpers do
     [ row ] = result
     { created_id } = { row["id"] }
     created_id
+  end
+  
+
+  def mics_to_ms(microseconds) do
+    microseconds/1000
+  end
+
+
+  def clock(mark, fun, args) do
+    {time, result} = :timer.tc(fun, args)
+    ms_time = mics_to_ms(time)
+    IO.puts(mark <> ": #{ms_time} ms")
+    result
+  end
+
+
+  def ts(mark, previous) do
+    current = ts(mark)
+    diff = 
+      :timer.now_diff(current, previous)
+      |> mics_to_ms()
+    IO.puts(mark <> " after #{diff} ms")
+    current
+  end
+
+  def ts(mark) do
+    current = :os.timestamp()
+    IO.puts(mark <> " at #{:os.system_time(1000)} ms")
+    current
   end
 end

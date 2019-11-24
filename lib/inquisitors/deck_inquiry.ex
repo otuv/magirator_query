@@ -1,7 +1,7 @@
 defmodule MagiratorQuery.Inquisitors.DeckInquiry do
 
   alias Bolt.Sips, as: Bolt
-  alias MagiratorQuery.Helpers
+  alias MagiratorQuery.Helper
 
   def select_all_results( deck_id ) do
 
@@ -19,7 +19,7 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
     
     Bolt.query!(Bolt.conn, query)
     |> nodes_to_results
-    |> Helpers.return_as_tuple
+    |> Helper.return_as_tuple
   end
 
 
@@ -63,7 +63,7 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
 
     Bolt.query!(Bolt.conn, query)
     |> result_set_to_result_list
-    |> Helpers.return_as_tuple
+    |> Helper.return_as_tuple
   end
 
   defp result_set_to_result_list(result_set) do
