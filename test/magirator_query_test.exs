@@ -61,11 +61,12 @@ defmodule MagiratorQueryTest do
 
 
   test "list deck results" do
-    {status, data} = Helper.clock("list deck results", &list_deck_results/1, [20])
+    {status, data_20} = Helper.clock("list deck results", &list_deck_results/1, [20])
     assert :ok == status
-    assert is_list data
-    assert not Enum.empty? data
-    first = List.first(data)
+    assert is_list data_20
+    assert not Enum.empty? data_20
+    assert 8 == Enum.count(data_20)
+    first = List.first(data_20)
     assert is_map first
     assert Map.has_key? first, :match_id
     assert Map.has_key? first, :game_id
@@ -73,9 +74,19 @@ defmodule MagiratorQueryTest do
     assert Map.has_key? first, :opponent_deck_id
     assert Map.has_key? first, :opponent_deck_name
     assert Map.has_key? first, :opponent_name
-    assert !Enum.find data, &(&1.match_id == nil) 
-    assert !Enum.find data, &(&1.game_id == nil) 
-    assert !Enum.find data, &(&1.opponent_deck_name == nil) 
-    assert !Enum.find data, &(&1.opponent_name == nil) 
+    assert !Enum.find data_20, &(&1.match_id == nil) 
+    assert !Enum.find data_20, &(&1.game_id == nil) 
+    assert !Enum.find data_20, &(&1.opponent_deck_name == nil) 
+    assert !Enum.find data_20, &(&1.opponent_name == nil) 
+    
+    {status, data_21} = Helper.clock("list deck results", &list_deck_results/1, [21])
+    assert :ok == status
+    assert is_list data_21
+    assert 0 == Enum.count(data_21)
+    
+    {status, data_22} = Helper.clock("list deck results", &list_deck_results/1, [22])
+    assert :ok == status
+    assert is_list data_22
+    assert 1 == Enum.count(data_22)
   end
 end

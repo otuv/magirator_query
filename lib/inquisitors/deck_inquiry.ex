@@ -55,6 +55,7 @@ defmodule MagiratorQuery.Inquisitors.DeckInquiry do
         -[:Currently]->(opponent_deck_data:Data), 
         (opponent_result)<-[:Got]-(opponent_player:Player)
         -[:Currently]->(opponent_data:Data) 
+      WHERE q_deck.id = #{deck_id} 
       OPTIONAL MATCH 
         (match:Match)-[:Contains]->(game) 
       WHERE q_deck.id = #{deck_id} 
